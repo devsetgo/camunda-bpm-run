@@ -1,3 +1,8 @@
+# project
+_venv/
+.mypy_cache/
+.vscode/
+
 # Compiled class file
 *.class
 
