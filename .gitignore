@@ -2,6 +2,7 @@
 _venv/
 .mypy_cache/
 .vscode/
+.pytest_cache/
 
 # Compiled class file
 *.class

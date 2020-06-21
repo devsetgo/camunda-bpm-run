@@ -1,0 +1,14 @@
+FROM openjdk:11-slim-buster
+RUN apt-get update && apt-get -y install python3-pip
+MAINTAINER Mike Ryan "mikeryan56@gmail.com"
+EXPOSE 8080
+COPY . /src
+WORKDIR /src
+# Evironment Variables
+ENV USE_ENV='docker'
+# Application information
+ENV APP_VERSION='7.13'
+#install requirements
+RUN pip3 install --upgrade pip setuptools wheel
+RUN pip install -r requirements.txt
+CMD ["python3", "install.py"]

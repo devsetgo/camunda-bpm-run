@@ -1,0 +1,29 @@
+# Find more available configuration properties on the following pages of the documentaion.
+# https://docs.camunda.org/manual/latest/user-guide/camunda-bpm-run/#configure-camunda-bpm-run
+# https://docs.camunda.org/manual/latest/user-guide/spring-boot-integration/configuration/#camunda-engine-properties
+
+camunda.bpm:
+  filter:
+    create: All tasks
+  admin-user:
+    id: demo
+    password: demo
+  run:
+# https://docs.camunda.org/manual/latest/user-guide/camunda-bpm-run/#cross-origin-resource-sharing
+    cors:
+      enabled: true
+      allowed-origins: "*"
+
+# https://docs.camunda.org/manual/latest/user-guide/camunda-bpm-run/#logging
+# https://docs.camunda.org/manual/latest/user-guide/logging/#process-engine
+logging:
+   level.root: INFO
+   file: logs/camunda-bpm-run.log
+
+# datasource configuration is required
+spring.datasource:
+  url: jdbc:DRIVER_TYPE:DB_URI/DB_NAME
+  driver-class-name: DRIVER-CLASS-NAME
+  username: USER_NAME
+  password: PASSWORD
+  test_thing: toast

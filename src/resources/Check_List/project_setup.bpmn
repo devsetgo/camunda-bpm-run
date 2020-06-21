@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions_0kx4jdm" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.7.0">
+  <bpmn:process id="Process_1crmnqj" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1fkfmqm</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1vzlp98" sourceRef="Activity_04yw6f7" targetRef="Activity_0rkdzcp" />
+    <bpmn:sequenceFlow id="Flow_1fkfmqm" sourceRef="StartEvent_1" targetRef="Activity_04yw6f7" />
+    <bpmn:endEvent id="Event_0haa9su">
+      <bpmn:incoming>Flow_1h9vfke</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_185uhxx" sourceRef="Activity_1efdmbw" targetRef="Gateway_1holonc" />
+    <bpmn:serviceTask id="Activity_04yw6f7" name="Get Tasks for Phase" camunda:asyncBefore="true">
+      <bpmn:incoming>Flow_1fkfmqm</bpmn:incoming>
+      <bpmn:outgoing>Flow_1vzlp98</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_05spf1u" name="Set Tasks for Phase">
+      <bpmn:incoming>Flow_0jm8065</bpmn:incoming>
+      <bpmn:outgoing>Flow_1h9vfke</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1h9vfke" sourceRef="Activity_05spf1u" targetRef="Event_0haa9su" />
+    <bpmn:userTask id="Activity_1efdmbw" name="Assign Tasks &#38; Due Dates">
+      <bpmn:incoming>Flow_0p2gh9k</bpmn:incoming>
+      <bpmn:outgoing>Flow_185uhxx</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_0rkdzcp" name="Add Tasks to Phase">
+      <bpmn:incoming>Flow_1vzlp98</bpmn:incoming>
+      <bpmn:incoming>Flow_04c6xmd</bpmn:incoming>
+      <bpmn:outgoing>Flow_0p2gh9k</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0p2gh9k" sourceRef="Activity_0rkdzcp" targetRef="Activity_1efdmbw" />
+    <bpmn:sequenceFlow id="Flow_04c6xmd" name="Add More Tasks" sourceRef="Gateway_1holonc" targetRef="Activity_0rkdzcp" />
+    <bpmn:exclusiveGateway id="Gateway_1holonc">
+      <bpmn:incoming>Flow_185uhxx</bpmn:incoming>
+      <bpmn:outgoing>Flow_0jm8065</bpmn:outgoing>
+      <bpmn:outgoing>Flow_04c6xmd</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0jm8065" sourceRef="Gateway_1holonc" targetRef="Activity_05spf1u" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1crmnqj">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1" bioc:stroke="rgb(67, 160, 71)" bioc:fill="rgb(200, 230, 201)">
+        <dc:Bounds x="152" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1vzlp98_di" bpmnElement="Flow_1vzlp98">
+        <di:waypoint x="380" y="150" />
+        <di:waypoint x="460" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1fkfmqm_di" bpmnElement="Flow_1fkfmqm">
+        <di:waypoint x="188" y="150" />
+        <di:waypoint x="280" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0haa9su_di" bpmnElement="Event_0haa9su" bioc:stroke="rgb(229, 57, 53)" bioc:fill="rgb(255, 205, 210)">
+        <dc:Bounds x="1062" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_185uhxx_di" bpmnElement="Flow_185uhxx">
+        <di:waypoint x="730" y="150" />
+        <di:waypoint x="795" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1h2xwau_di" bpmnElement="Activity_04yw6f7">
+        <dc:Bounds x="280" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_05spf1u_di" bpmnElement="Activity_05spf1u">
+        <dc:Bounds x="900" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1h9vfke_di" bpmnElement="Flow_1h9vfke">
+        <di:waypoint x="1000" y="150" />
+        <di:waypoint x="1062" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1xnu8h2_di" bpmnElement="Activity_1efdmbw">
+        <dc:Bounds x="630" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1it8q5g_di" bpmnElement="Activity_0rkdzcp">
+        <dc:Bounds x="460" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0p2gh9k_di" bpmnElement="Flow_0p2gh9k">
+        <di:waypoint x="560" y="150" />
+        <di:waypoint x="630" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04c6xmd_di" bpmnElement="Flow_04c6xmd">
+        <di:waypoint x="820" y="120" />
+        <di:waypoint x="820" y="80" />
+        <di:waypoint x="510" y="80" />
+        <di:waypoint x="510" y="110" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="626" y="62" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_1holonc_di" bpmnElement="Gateway_1holonc" isMarkerVisible="true">
+        <dc:Bounds x="795" y="125" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0jm8065_di" bpmnElement="Flow_0jm8065">
+        <di:waypoint x="845" y="150" />
+        <di:waypoint x="900" y="150" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
