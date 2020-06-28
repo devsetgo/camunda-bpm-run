@@ -6,4 +6,4 @@ set -x
 pip3 install --upgrade pip setuptools wheel
 
 # install requirements
-pip3 install -r requirements.txt
+pip3 install -r requirements/dev.txt

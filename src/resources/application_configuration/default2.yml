@@ -22,8 +22,8 @@ logging:
 
 # datasource configuration is required
 spring.datasource:
-  url: jdbc:DRIVER_TYPE:DB_URI/DB_NAME
-  driver-class-name: DRIVER-CLASS-NAME
-  username: USER_NAME
-  password: PASSWORD
-  test_thing: toast
+  url: jdbc:h2:localhost:5432/camunda-engine
+  driver-class-name: org.h2.Driver
+  username: sa
+  password: sa
+  test_thing: bob

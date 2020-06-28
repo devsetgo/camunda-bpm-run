@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zipfile import ZipFile
 import requests
 from pathlib import Path
@@ -8,25 +9,68 @@ import sys
 import shutil
 from dotenv import load_dotenv
 import yaml
+import logging
 
 save_directory = "camunda"
 bpm_dir = "bpm_run"
 resource_dir = "resources"
 
 USE_ENV = os.getenv("USE_ENV")
-if USE_ENV != 'docker':
+if USE_ENV != "docker":
     load_dotenv()
 
-env_var = {
-"TEST": "bob",
-"RUN_APPS": os.getenv("RUN_APPS"),
-"USER_NAME": os.getenv("USER_NAME"),
-"PASSWORD": os.getenv("PASSWORD"),
-# Options [postgres, mariadb, h2, oracle, mssql, db2]
-"DRIVER_TYPE": os.getenv("DRIVER_TYPE"),
-"DB_URI": os.getenv("DB_URI"),
-"DB_NAME": os.getenv("DB_NAME"),
+ENV_VAR = {
+    "TEST": "bob",
+    "RUN_APPS": os.getenv("RUN_APPS"),
+    "USER_NAME": os.getenv("USER_NAME"),
+    "PASSWORD": os.getenv("PASSWORD"),
+    # Options [postgres, mariadb, h2, oracle, mssql, db2]
+    "DRIVER_TYPE": os.getenv("DRIVER_TYPE"),
+    "DB_URI": os.getenv("DB_URI"),
+    "DB_NAME": os.getenv("DB_NAME"),
+    "DRIVER-CLASS-NAME": "none",
 }
+
+switch = {
+    "postgres": {
+        "DRIVER_TYPE": "postgresql",
+        "DRIVER-CLASS-NAME": "org.postgresql.Driver",
+        "file": "postgresql-42.2.13.jar",
+    },
+    "h2": {
+        "DRIVER_TYPE": "h2",
+        "DRIVER-CLASS-NAME": "org.h2.Driver",
+        "file": "postgresql-42.2.13.jar",
+    },
+    "mariadb": {
+        "DRIVER_TYPE": "mariadb",
+        "DRIVER-CLASS-NAME": "org.mariadb.jdbc.Driver",
+        "file": "mariadb-java-client-2.6.0.jar",
+    },
+    "oracle": {
+        "DRIVER_TYPE": "oracle",
+        "DRIVER-CLASS-NAME": "oracle.jdbc.OracleDriver",
+        "file": "ojdbc10.jar",
+    },
+    "mssql": {
+        "DRIVER_TYPE": "sqlserver",
+        "DRIVER-CLASS-NAME": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+        "file": "mssql-jdbc-8.2.2.jre11.jar",
+    },
+    "db2": {
+        "DRIVER_TYPE": "db2",
+        "DRIVER-CLASS-NAME": "com.ibm.db2.jcc.DB2Driver",
+        "file": "jcc-11.5.0.0.jar",
+    },
+}
+
+
+def set_db_driver(driver_type: str) -> str:
+
+    data = switch[driver_type]
+    result: str = data["DRIVER-CLASS-NAME"]
+    return result
+
 
 def unzip_to_directory(version: int):
 
@@ -92,46 +136,35 @@ def download_file(version: int):
 
 def generate_configuration():
 
-    print(env_var)
-    # fin = open("resources/application_configuration/base_template.yml", "rt")
-    # # # output file to write the result to
-    # fout = open("resources/application_configuration/default2.yml", "wt")
-    # # for each line in the input file
-    # for k,v in env_var.items():
-                
-    #     for line in fin:
-    #         # read replace the string and write to output file
-    #         fout.write(line.replace(k, v))
-    #         print(k,v)
-    
-    # # close input and output files
-    # fin.close()
-    # fout.close()
-    with open("resources/application_configuration/base_template.yml", "rt") as fin:
-        with open("resources/application_configuration/default2.yml", "wt") as fout:
-            
-            for k,v in env_var.items():
-                for line in fin:
-                    fout.write(line.replace(k, "toast"))
+    create_template()
+    # change variables
+    for k, v in ENV_VAR.items():
+        if k == "DRIVER-CLASS-NAME":
+            v = set_db_driver(ENV_VAR["DRIVER_TYPE"])
+        change_template_values(k, v)
 
-def inplace_change(filename, old_string, new_string):
+
+def change_template_values(key_name: str, value_name: str):
+
     file_name = "resources/application_configuration/default2.yml"
-    # Safely read the input filename using 'with'
-    with open(file_name) as f:
-        s = f.read()
-        if old_string not in s:
-            print('"{old_string}" not found in {filename}.'.format(**locals()))
-            return
+    # Read in the file
+    with open(file_name, "r") as file:
+        filedata = file.read()
 
-    # Safely write the changed content, if found in the file
-    with open(file_name, 'w') as f:
-        print('Changing "{old_string}" to "{new_string}" in {filename}'.format(**locals()))
-        s = s.replace(old_string, new_string)
-        f.write(s)
+    # Replace the target string
+    filedata = filedata.replace(key_name, value_name)
+
+    # Write the file out again
+    with open(file_name, "w") as file:
+        file.write(filedata)
 
 
-def save_config():
-    pass
+def create_template():
+    from shutil import copyfile
+
+    source = "resources/application_configuration/base_template.yml"
+    target = "resources/application_configuration/default2.yml"
+    copyfile(source, target)
 
 
 def start_camunda():

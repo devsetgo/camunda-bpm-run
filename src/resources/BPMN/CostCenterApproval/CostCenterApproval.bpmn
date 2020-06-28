@@ -3,7 +3,7 @@
   <bpmn:process id="CostCenterApproval" name="Cost Center Approval" isExecutable="true">
     <bpmn:documentation>Invoice Submission, Review and Processing</bpmn:documentation>
     <bpmn:startEvent id="StartEvent_1" name="StartEvent_1&#10;" camunda:formKey="embedded:app:forms/cca/cca-ar-start.html" camunda:initiator="requestor">
-      <bpmn:documentation>All fields are required. 
+      <bpmn:documentation>All fields are required.
 
 Enter the cost center this invoice is against, the rounded amount for the invoice and attached the invoice. Enter a description for the invoice, limited to 500 characters.</bpmn:documentation>
       <bpmn:extensionElements>
@@ -123,7 +123,7 @@ Please complete this process and enter a date of billing. A note is optional.</b
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${FormField_secondaryApproval==false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:userTask id="secondary" name="Secondary Approval" camunda:formKey="embedded:app:forms/cca/cca-approval-secondary.html" camunda:assignee="${cca.secondary}">
-      <bpmn:documentation>The invoice is over the limit of the cost center owner, please review and approve/reject. 
+      <bpmn:documentation>The invoice is over the limit of the cost center owner, please review and approve/reject.
 
 Rejection goes back to the requestor.</bpmn:documentation>
       <bpmn:extensionElements>
