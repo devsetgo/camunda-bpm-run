@@ -3,33 +3,22 @@ from zipfile import ZipFile
 import requests
 from pathlib import Path
 import tqdm
+import logging
 import os
 import stat
 import sys
 import shutil
 from dotenv import load_dotenv
 import yaml
-import logging
+from logging_config import config_log
+import settings
+from loguru import logger
+
+config_log()
 
 save_directory = "camunda"
 bpm_dir = "bpm_run"
 resource_dir = "resources"
-
-USE_ENV = os.getenv("USE_ENV")
-if USE_ENV != "docker":
-    load_dotenv()
-
-ENV_VAR = {
-    "TEST": "bob",
-    "RUN_APPS": os.getenv("RUN_APPS"),
-    "USER_NAME": os.getenv("USER_NAME"),
-    "PASSWORD": os.getenv("PASSWORD"),
-    # Options [postgres, mariadb, h2, oracle, mssql, db2]
-    "DRIVER_TYPE": os.getenv("DRIVER_TYPE"),
-    "DB_URI": os.getenv("DB_URI"),
-    "DB_NAME": os.getenv("DB_NAME"),
-    "DRIVER-CLASS-NAME": "none",
-}
 
 switch = {
     "postgres": {
@@ -69,13 +58,14 @@ def set_db_driver(driver_type: str) -> str:
 
     data = switch[driver_type]
     result: str = data["DRIVER-CLASS-NAME"]
+    logger.info(f"Setting Driver Class Name to {result}")
     return result
 
 
 def unzip_to_directory(version: int):
 
     file_name: str = f"camunda-bpm-run-7.{version}.0.zip"
-
+    logger.info(f"Unzipping {file_name}")
     # open from
     open_path = Path.cwd().joinpath(save_directory)
     saved_file = f"{open_path}/{file_name}"
@@ -87,6 +77,7 @@ def unzip_to_directory(version: int):
     with ZipFile(saved_file, "r") as zipObj:
         # Extract all the contents of zip file in different directory
         zipObj.extractall(unzip_path)
+    logger.info(f"Unzipped file to {unzip_path}")
 
 
 def chmod_start_sh():
@@ -95,6 +86,7 @@ def chmod_start_sh():
     chmod_file = f"{unzip_path}/start.sh"
     st = os.stat(chmod_file)
     os.chmod(chmod_file, st.st_mode | stat.S_IEXEC)
+    logger.info(f"Execution privilege set")
 
 
 def copy_resources():
@@ -102,14 +94,19 @@ def copy_resources():
     resource_path = Path.cwd().joinpath(resource_dir)
     resource_build = Path.cwd().joinpath(bpm_dir)
     bpm_resource_location = f"{resource_build}/configuration/resources"
-    shutil.copytree(resource_path, bpm_resource_location)
+    # shutil.copytree(resource_path, bpm_resource_location)
+    from distutils.dir_util import copy_tree
+
+    logger.info("Starting copying of resources files")
+    copy_tree(resource_path, bpm_resource_location)
+    logger.info("Completed copying of resources files")
 
 
 def download_file(version: int):
 
     # https://downloads.camunda.cloud/release/camunda-bpm/run/7.13/camunda-bpm-run-7.13.0.zip
     url: str = f"https://downloads.camunda.cloud/release/camunda-bpm/run/7.{version}/camunda-bpm-run-7.{version}.0.zip"
-
+    logger.info(f"Downlaoding Camunda 7.{version} from {url}")
     r = requests.get(url, stream=True)
     file_size = int(r.headers["Content-Length"])
     chunk_size = 1024  # 1 MB
@@ -132,17 +129,22 @@ def download_file(version: int):
         ):
 
             output_file.write(chunk)
+    logger.info(f"Download Completed")
 
 
 def generate_configuration():
-
+    logger.info(f"Begin configuration")
     create_template()
     # change variables
+    ENV_VAR = settings.ENV_VAR
+
     for k, v in ENV_VAR.items():
+
         if k == "DRIVER-CLASS-NAME":
             v = set_db_driver(ENV_VAR["DRIVER_TYPE"])
         change_template_values(k, v)
 
+    logger.info(f"Environmental variables have been set")
 
 def change_template_values(key_name: str, value_name: str):
 
@@ -153,7 +155,7 @@ def change_template_values(key_name: str, value_name: str):
 
     # Replace the target string
     filedata = filedata.replace(key_name, value_name)
-
+    logger.info(f"Setting value for {key_name}")
     # Write the file out again
     with open(file_name, "w") as file:
         file.write(filedata)
@@ -164,7 +166,9 @@ def create_template():
 
     source = "resources/application_configuration/base_template.yml"
     target = "resources/application_configuration/default2.yml"
+    logger.info(f"Copying file from {source}")
     copyfile(source, target)
+    logger.info(f"File copied to {target}")
 
 
 def start_camunda():
@@ -173,16 +177,19 @@ def start_camunda():
 
 def start():
 
+    logger.info("Starting download of Camunda BPM Run")
     # start download
     download_file(version=13)
     # unzip file
+    logger.info("Starting unzip of Camunda BPM Run")
     unzip_to_directory(version=13)
     # set permission
+    logger.info("Setting file permissions")
     chmod_start_sh()
     # configure?
     generate_configuration()
     # add resource files?
-    # copy_resources()
+    copy_resources()
     # start?
 
 
