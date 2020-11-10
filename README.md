@@ -1,2 +1,2 @@
-# camunda-bpm-run
-Learning Camunda BPM Run
+# Camunda BPM Run
+Project to build a docker image for Camunda BPM Run that has all the dependencies and configuration needed.
