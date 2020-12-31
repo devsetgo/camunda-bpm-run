@@ -2,3 +2,4 @@ log/
 requirements
 camunda-h2-default/
 camunda-h2-test-production/
+scripts/

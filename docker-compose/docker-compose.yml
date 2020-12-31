@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   bpm:
-    image: mikeryan56/bpm:7.14-b5 
+    image: mikeryan56/bpm:latest 
     restart: always
     ports:
     - "8080"
