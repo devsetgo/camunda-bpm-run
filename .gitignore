@@ -1,4 +1,5 @@
 # project
+_venv/
 .vscode
 backup/
 .mypy_cache/
