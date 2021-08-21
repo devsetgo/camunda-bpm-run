@@ -6,4 +6,4 @@ set -x
 python3 install.py
 
 # run camunda
-./bpm_run/start.sh
+# ./bpm_run/start.sh
