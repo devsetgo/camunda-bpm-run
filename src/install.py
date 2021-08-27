@@ -4,6 +4,7 @@ from tqdm import tqdm
 import logging
 from zipfile import ZipFile
 import shutil, os
+import stat
 
 
 def download_camunda(version:str):
@@ -31,21 +32,21 @@ def download_camunda(version:str):
 
 def unzip_camunda(version:str):
 
-    file_name:str=f"bpm_run/camunda-bpm-run-{version}.0.zip"
+    file_name:str=f"camunda-bpm-run-{version}.0.zip"
     with ZipFile(file_name, 'r') as zipObj:
         # Extract all the contents of zip file in current directory
-        zipObj.extractall()
+        zipObj.extractall("bpm_run")
+    os.remove(file_name)
+    set_execute_permission()
 
-
-def move_camunda(version:str    ):
-    # os.mkdir('bpm_run')
-    file_name:str=f"camunda-bpm-run-{version}.0.zip"
-    shutil.move(file_name, 'bpm_run')
+def set_execute_permission():
+    st = os.stat('bpm_run/start.sh')
+    os.chmod('bpm_run/start.sh', st.st_mode | stat.S_IEXEC)
 
 def main(version:str):
     logging.info("Starting Download")
     download_camunda(version=version)
-    move_camunda(version=version)
+    # move_camunda(version=version)
     unzip_camunda(version=version)
 
 if __name__ == "__main__":
