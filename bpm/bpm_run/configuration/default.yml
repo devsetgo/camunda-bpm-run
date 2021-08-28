@@ -20,6 +20,10 @@ camunda.bpm:
       enabled: true
       allowed-origins: "*"
 
+    auth.enabled: true
+  # webapp:
+  #   authorization.enabled: true
+
 # datasource configuration is required
 spring.datasource:
   url: jdbc:h2:./camunda-h2-default/process-engine;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE

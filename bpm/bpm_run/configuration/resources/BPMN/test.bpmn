@@ -11,10 +11,10 @@
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_0fi5i9c" sourceRef="StartEvent_1" targetRef="Activity_0q5s80s" />
     <bpmn:sequenceFlow id="Flow_0ezwua3" sourceRef="Activity_0q5s80s" targetRef="Gateway_034mgxh" />
-    <bpmn:sequenceFlow id="Flow_0m8gp70" sourceRef="Gateway_034mgxh" targetRef="Activity_1o2ptdk" />
-    <bpmn:sequenceFlow id="Flow_1t86qf4" sourceRef="Gateway_034mgxh" targetRef="Activity_1w10xfz" />
-    <bpmn:sequenceFlow id="Flow_04iqdyx" sourceRef="Activity_1w10xfz" targetRef="Gateway_1mo06rp" />
-    <bpmn:sequenceFlow id="Flow_05ve7c9" sourceRef="Activity_1o2ptdk" targetRef="Gateway_1mo06rp" />
+    <bpmn:sequenceFlow id="Flow_0m8gp70" sourceRef="Gateway_034mgxh" targetRef="task1" />
+    <bpmn:sequenceFlow id="Flow_1t86qf4" sourceRef="Gateway_034mgxh" targetRef="task2" />
+    <bpmn:sequenceFlow id="Flow_04iqdyx" sourceRef="task2" targetRef="Gateway_1mo06rp" />
+    <bpmn:sequenceFlow id="Flow_05ve7c9" sourceRef="task1" targetRef="Gateway_1mo06rp" />
     <bpmn:parallelGateway id="Gateway_1mo06rp">
       <bpmn:incoming>Flow_04iqdyx</bpmn:incoming>
       <bpmn:incoming>Flow_05ve7c9</bpmn:incoming>
@@ -30,21 +30,19 @@
       <bpmn:outgoing>Flow_0ezwua3</bpmn:outgoing>
       <bpmn:script>// hi</bpmn:script>
     </bpmn:scriptTask>
-    <bpmn:userTask id="Activity_1o2ptdk" name="task 1">
+    <bpmn:userTask id="task1" name="task 1">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="FormField_2u9iio6" label="test 2" type="string" />
-          <camunda:formField id="FormField_1sm15ic" label="test 2" type="string" />
+          <camunda:formField id="test1" label="test t" type="string" defaultValue="This is a test" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0m8gp70</bpmn:incoming>
       <bpmn:outgoing>Flow_05ve7c9</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_1w10xfz" name="task 2">
+    <bpmn:userTask id="task2" name="task 2">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="FormField_3odoplt" label="test 3" type="string" />
-          <camunda:formField id="FormField_03t0blt" label="test 4" type="string" />
+          <camunda:formField id="test2" label="test 2" type="string" defaultValue="This another test" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1t86qf4</bpmn:incoming>
@@ -57,37 +55,37 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="test_process">
-      <bpmndi:BPMNEdge id="Flow_0fi5i9c_di" bpmnElement="Flow_0fi5i9c">
-        <di:waypoint x="215" y="177" />
-        <di:waypoint x="270" y="177" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0ezwua3_di" bpmnElement="Flow_0ezwua3">
-        <di:waypoint x="370" y="177" />
-        <di:waypoint x="455" y="177" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0m8gp70_di" bpmnElement="Flow_0m8gp70">
-        <di:waypoint x="480" y="152" />
-        <di:waypoint x="480" y="120" />
-        <di:waypoint x="520" y="120" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1t86qf4_di" bpmnElement="Flow_1t86qf4">
-        <di:waypoint x="480" y="202" />
-        <di:waypoint x="480" y="250" />
-        <di:waypoint x="520" y="250" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04iqdyx_di" bpmnElement="Flow_04iqdyx">
-        <di:waypoint x="620" y="250" />
-        <di:waypoint x="700" y="250" />
-        <di:waypoint x="700" y="202" />
+      <bpmndi:BPMNEdge id="Flow_13tn57k_di" bpmnElement="Flow_13tn57k">
+        <di:waypoint x="725" y="177" />
+        <di:waypoint x="782" y="177" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_05ve7c9_di" bpmnElement="Flow_05ve7c9">
         <di:waypoint x="620" y="120" />
         <di:waypoint x="700" y="120" />
         <di:waypoint x="700" y="152" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_13tn57k_di" bpmnElement="Flow_13tn57k">
-        <di:waypoint x="725" y="177" />
-        <di:waypoint x="782" y="177" />
+      <bpmndi:BPMNEdge id="Flow_04iqdyx_di" bpmnElement="Flow_04iqdyx">
+        <di:waypoint x="620" y="250" />
+        <di:waypoint x="700" y="250" />
+        <di:waypoint x="700" y="202" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1t86qf4_di" bpmnElement="Flow_1t86qf4">
+        <di:waypoint x="480" y="202" />
+        <di:waypoint x="480" y="250" />
+        <di:waypoint x="520" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0m8gp70_di" bpmnElement="Flow_0m8gp70">
+        <di:waypoint x="480" y="152" />
+        <di:waypoint x="480" y="120" />
+        <di:waypoint x="520" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ezwua3_di" bpmnElement="Flow_0ezwua3">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="455" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fi5i9c_di" bpmnElement="Flow_0fi5i9c">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="159" width="36" height="36" />
@@ -101,10 +99,10 @@
       <bpmndi:BPMNShape id="Activity_1g4grxa_di" bpmnElement="Activity_0q5s80s">
         <dc:Bounds x="270" y="137" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1syiwdq_di" bpmnElement="Activity_1o2ptdk">
+      <bpmndi:BPMNShape id="Activity_1syiwdq_di" bpmnElement="task1">
         <dc:Bounds x="520" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_019jv42_di" bpmnElement="Activity_1w10xfz">
+      <bpmndi:BPMNShape id="Activity_019jv42_di" bpmnElement="task2">
         <dc:Bounds x="520" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1r9afua_di" bpmnElement="Event_0r9cbic">
