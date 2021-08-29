@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main role="main">
+  <div class="content">
+    <div class="container">
+      <div class="row">
+        {% for t in task_data|sort(attribute='prioritization') %}
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-tasks fa-lg"> {{t.name|upper}}</i></h5>
+              <b>Description:</b>
+              <p class="card-text">{{t.description}}</p>
+              
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><i class="fas fa-user"> Assingee: </i> {{t.assignee|capitalize}}</li>
+              <li class="list-group-item"><i class="fas fa-exclamation"> Priority: </i> {{t.priority}}</li>
+              <li class="list-group-item"><i class="fas fa-clock"> Due Date: </i> {{t.simple_due_date}}</li>
+              <li class="list-group-item"><i class="fas fa-calendar-day"> Created Date: </i> {{t.simple_create_date}}</li>
+            </ul>
+            <!-- .strftime('%Y-%m-%d %I:%M') 2021-09-11T18:17:29.202-0400-->
+          </div>
+        </div>
+        {% endfor %}
+        <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
+          <div class="widget">
+            <div class="bd-example">
+
+              <div id="tabs" hx-target="#tab-contents" _="on htmx:afterOnLoad take .selected for event.target">
+
+                <a hx-get="/get-history/{{proc_data.id}}" class="selected">Process History</a>
+                <a hx-get="/get-comments/{{proc_data.id}}">Process Comments</a>
+              </div>
+              <div class="row">
+                <div id="tab-contents" hx-get="/get-history/{{proc_data.id}}" hx-trigger="load"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- /.row -->
+</main>
+{% endblock %}

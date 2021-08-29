@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import requests
+import httpx
 from tqdm import tqdm
 import logging
 from zipfile import ZipFile
@@ -11,7 +11,7 @@ def download_camunda(version:str):
     url:str=f"https://downloads.camunda.cloud/release/camunda-bpm/run/{version}/camunda-bpm-run-{version}.0.zip"
     local_filename = url.split('/')[-1]
     # NOTE the stream=True parameter below
-    with requests.get(url, stream=True) as r:
+    with httpx.get(url, stream=True) as r:
         total_size = int(r.headers["Content-Length"])
         downloaded = 0  # keep track of size downloaded so far
         chunkSize = 1024

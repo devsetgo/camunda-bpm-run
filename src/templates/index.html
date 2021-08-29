@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main role="main">
+
+  <div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+      {% for pd in proc_data %}
+      <div class="card col-md-4" name="definitionId" hx-post="/get-def/{{pd.definitionId}}" hx-trigger="load"
+        hx-target="#defintion-{{pd.id}}">
+        <div class="card-body">
+          <h5 class="card-title" id="defintion-{{pd.id}}">Card title</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{pd.businessKey}}</h6>
+          <ul>
+            <li class="nav-item" name="processId" hx-post="/get-tasks-count/{{pd.id}}" hx-trigger="load"
+              hx-target="#task-{{pd.id}}">
+              <a href="/process-instance/{{pd.id}}" class="nav-link">
+                Tasks <span class="float-right" id='task-{{pd.id}}'>x</span>
+              </a>
+            </li>
+            <li class="nav-item">{{pd.businessKey}}</li>
+          </ul>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <hr>
+
+  </div> <!-- /container -->
+
+</main>
+{% endblock %}

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import requests
+import httpx
 from tqdm import tqdm
-import secrets
+import uuid
 import random
 
 base_url: str = "http://localhost:8080/engine-rest"
@@ -27,9 +27,9 @@ def make_tasks(qty: str = None):
                 "value": "Something, something",
                 "valueInfo": {},
             },
-            "businessKey": f"key-{secrets.token_hex(10)}",
+            "businessKey": f"CASE-{uuid.uuid4()}",
         }
-        r = requests.post(url, json=data, auth=random_auth())
+        r = httpx.post(url, json=data, auth=random_auth())
 
 
 if __name__ == "__main__":

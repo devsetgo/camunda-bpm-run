@@ -86,7 +86,7 @@ setlocal disabledelayedexpansion
 REM if Swagger UI is enabled but REST is not, warn the user
 IF [%swaggeruiChosen%]==[true] (
   IF [%restChosen%]==[false] (
-    ECHO You did not enable the REST API. Swagger UI will not be able to send any requests to this Camunda Platform Run instance.
+    ECHO You did not enable the REST API. Swagger UI will not be able to send any httpx to this Camunda Platform Run instance.
   )
 )
 
