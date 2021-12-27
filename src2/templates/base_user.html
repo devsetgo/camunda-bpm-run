@@ -1,0 +1,90 @@
+<!-- Right navbar links -->
+<ul class="navbar-nav ml-auto">
+    {% if request.session.user_name %}
+        {% if request.session.admin == true %}
+    <!-- Notifications Dropdown Menu -->
+
+    <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-bell"></i>
+            <span class="badge badge-warning navbar-badge"></span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-item dropdown-header">Notifications</span>
+            <div class="dropdown-divider"></div>
+            <a href="/admin/login-failures" class="dropdown-item">
+
+                <i class="fas fa-exclamation-triangle"></i> 30 Day Invalid Logins
+                <span class="float-right text-muted text-sm">
+                    <div hx-get="/notifications/attempts" hx-trigger="load"></div>
+                </span>
+
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="/admin/open" class="dropdown-item">
+                <i class="fas fa-users mr-2"></i> Registration Requests
+                <span class="float-right text-muted text-sm"><div hx-get="/notifications/reg-req" hx-trigger="load"></div></span>
+            </a>
+
+        </div>
+    </li>
+    {% endif %}
+    <!-- User -->
+    <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="mr-2 fas fa-user"></i>
+            <!-- <span class="badge badge-warning navbar-badge">55</span> -->
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <!-- <span class="dropdown-item dropdown-header">15 Notifications</span> -->
+            <div class="dropdown-divider"></div>
+            <a href="/user/profile" class="dropdown-item">
+                <i class="mr-2 fas fa-user-edit"> </i>
+                My Data
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="/user/password-change" class="dropdown-item">
+
+                <i class="mr-2 fas fa-key"> </i>
+                Password Change
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+                <i class="mr-2 fas fa-tint"> </i>
+                Other User Function
+            </a>
+            <div class="dropdown-divider"></div>
+            <form action="/user/logout" method="POST">
+                <button class="dropdown-item btn btn-block btn-outline-primary" type="submit">Logout</button>
+            </form>
+            <!-- <a href="/auth/logout" class="dropdown-item">
+                <i class="mr-2 fas fa-sign-in-alt"> </i>
+                Logout
+            </a> -->
+    </li>
+    <!-- <li class="nav-item">
+        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
+            <i class="fas fa-th-large"></i>
+        </a>
+    </li> -->
+    {% else %}
+    <!-- Login -->
+    <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="fas fa-user"></i>
+            <!-- <span class="badge badge-warning navbar-badge">55</span> -->
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <!-- <span class="dropdown-item dropdown-header">15 Notifications</span> -->
+            <div class="dropdown-divider"></div>
+            <form class="form-inline" action="/auth/login" , method="POST">
+                <button class="dropdown-item btn btn-block btn-outline-primary" type="submit">
+                    <span class="fab fa-github"> Login with Github</span>
+                </button>
+                <!-- <a class="btn btn-app" data-toggle="Login with Github" type="submit">
+                        <span class="fab fa-github"> Login with Github</span>
+                      </a> -->
+            </form>
+    </li>
+    {% endif %}
+</ul>

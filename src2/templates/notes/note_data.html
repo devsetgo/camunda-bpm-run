@@ -1,0 +1,33 @@
+{% for n in notes.notes %}
+<div class="col-md-3">
+  <div class="card card-primary">
+    <div class="card-header">
+      <h3 class="card-title">{{n.mood}} | {{n.date_created.strftime('%Y-%m-%d %H:%M')}}</h3>
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+        </button>
+      </div>
+      <!-- /.card-tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+      <dl>
+        <dt><span><a href="/notes/{{n.id}}"><i class="fas fa-book-open"></i> Open</a></span></dt>
+        <dt>Preview</dt>
+        <dd>{{n.preview}}</dd>
+        <dt>Tags</dt>
+        <dd>{%for tags in n.tags%}
+          {% for k,v in tags.items() %}
+          {{k}},
+          {%endfor%}
+          {%endfor%}</dd>
+        <dt>Sentiment Analysis</dt>
+        <dd>Polarity: {{n.sentiment_polarity}}</dd>
+        <dd>Subjectivity: {{n.sentiment_subjectivity}}</dd>
+      </dl>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+{% endfor %}
